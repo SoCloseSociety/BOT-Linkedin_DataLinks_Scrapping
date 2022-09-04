@@ -21,8 +21,8 @@ from selenium.common.exceptions import (
     TimeoutException,
 )
 
-username = "tahmidalavi1999@gmail.com"
-password = "Harkipta2020*#?"
+username = "soclose.crm@gmail.com"
+password = "soclose@123"
 
 
 search_query = "director in energy"
