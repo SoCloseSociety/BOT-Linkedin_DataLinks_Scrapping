@@ -13,6 +13,7 @@ import re
 import pandas as pd
 import numpy as np
 
+from datetime import datetime
 
 from selenium.common.exceptions import (
     ElementNotVisibleException,
@@ -21,14 +22,19 @@ from selenium.common.exceptions import (
     TimeoutException,
 )
 
-username = "soclose.crm@gmail.com"
-password = "soclose@123"
+from os.path import dirname, join
 
 
-search_query = "director in energy"
+username =  input('Enter your linkedin Email : ')
+password = input('Enter your linkedin Password : ')
+
+
+#search_query = "director in energy"
+search_query = input('Enter your search query : ')
 search_query = search_query.replace(" ", "%20")
 
-place_name = "Paris, Île-de-France, France"
+place_name = input('Enter targed place name : ')
+#place_name = "Paris, Île-de-France, France"
 
 
 options = webdriver.ChromeOptions()
@@ -67,7 +73,7 @@ def scrap_available_profie():
     time.sleep(2)
     driver.find_element(By.XPATH, '//button[text()="Locations"]').click()
 
-    time.sleep(2)
+    time.sleep(4)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(2)
     # html = driver.page_source
@@ -101,8 +107,8 @@ def scrap_available_profie():
             Linked_in_designation.append(designation.text)
 
 
-    last_page = int(re.search(r'\d+', total_pages[len(total_pages)-1]).group())
-    # last_page = 2
+    #last_page = int(re.search(r'\d+', total_pages[len(total_pages)-1]).group())
+    last_page = 2
 
     print(driver.current_url)
 
@@ -156,23 +162,41 @@ def scrap_available_profie():
 
 
 
-    df = pd.DataFrame({"name1" : a, "name2" : b})
-    df.to_csv("test1.csv", index=False)
-    # items = list.find_element(By.TAG_NAME,"li")
-    # for item in items:
-    #     text = item.text
-    #     print(text)
+    df = pd.DataFrame({"Profile Link" : a, "Designation" : b})
+    #df.to_csv("test1.csv", index=False)
+
+    now = datetime.now() # current date and time
+
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    date_time = str(date_time)
+    date_time.replace(", ", "_")
+
+    name = ""
+
+    for i in date_time:
+        if i == '' or i==',' or i==' ':
+            pass
+        else:
+            name += i
+
+    name2 = ""
+
+    count = 1
+    for i in name:
+        if count == 10:
+            name2 += i+"_"
+        else:
+            name2 += i
+        count = count + 1
+
+    name2 = name2.replace("/", "-")
+    name2 = name2.replace(":", "-")
+    project_root = dirname(dirname(__file__))
+    df.to_csv("LinkedinData_"+str(name2)+".csv", index=False)
 
 
 
 
-
-    
-
-
-
-
- 
 
 loging()
 time.sleep(15)
