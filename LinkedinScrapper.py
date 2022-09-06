@@ -115,6 +115,7 @@ def scrap_available_profie():
     for x in range(2, last_page+1):
         time.sleep(10)
         count = 0
+        count2 = 0
         driver.get(driver.current_url+'&page='+str(x))
 
         time.sleep(4)
@@ -147,12 +148,15 @@ def scrap_available_profie():
                 count = count + 1
                 
             for designation in search_rslt_tag.find_all('div', {"class":"entity-result__primary-subtitle t-14 t-black t-normal"}):
-                #print (designation.text)  
-                Linked_in_designation.append(designation.text)
+                #print (designation.text) 
+                if (count2 % 2) == 0: 
+                    Linked_in_designation.append(designation.text)
+                else:
+                    count2 = count2 + 1
 
 
     #Linkedin_link = list(dict.fromkeys(Linkedin_link))
-    Linked_in_designation = list(dict.fromkeys(Linked_in_designation))
+    #Linked_in_designation = list(dict.fromkeys(Linked_in_designation))
 
     print(len(Linkedin_link))
     print(len(Linked_in_designation))
