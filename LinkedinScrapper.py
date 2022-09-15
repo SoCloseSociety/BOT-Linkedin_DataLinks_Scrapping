@@ -27,14 +27,19 @@ from os.path import dirname, join
 
 username =  input('Enter your linkedin Email : ')
 password = input('Enter your linkedin Password : ')
+file_name = input('Enter your file name : ')
 
 
-#search_query = "director in energy"
+# username =  ''
+# password =   ''
+# file_name = ''
+
+# search_query = ""
 search_query = input('Enter your search query : ')
 search_query = search_query.replace(" ", "%20")
 
 place_name = input('Enter targed place name : ')
-#place_name = "Paris, Île-de-France, France"
+# place_name = ""
 
 
 options = webdriver.ChromeOptions()
@@ -107,8 +112,11 @@ def scrap_available_profie():
             Linked_in_designation.append(designation.text)
 
 
-    #last_page = int(re.search(r'\d+', total_pages[len(total_pages)-1]).group())
-    last_page = 2
+    if(len(total_pages) == 0):
+        last_page = 1
+    else:
+        last_page = int(re.search(r'\d+', total_pages[len(total_pages)-1]).group())
+    #last_page = 2
 
     print(driver.current_url)
 
@@ -164,39 +172,11 @@ def scrap_available_profie():
     a = np.array(Linkedin_link)
     b = np.array(Linked_in_designation)
 
+    df = pd.DataFrame({"Profile Link" : a})
+    df.to_csv(file_name+"_Profile_Link.csv", index=False)
 
-
-    df = pd.DataFrame({"Profile Link" : a, "Designation" : b})
-    #df.to_csv("test1.csv", index=False)
-
-    now = datetime.now() # current date and time
-
-    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-    date_time = str(date_time)
-    date_time.replace(", ", "_")
-
-    name = ""
-
-    for i in date_time:
-        if i == '' or i==',' or i==' ':
-            pass
-        else:
-            name += i
-
-    name2 = ""
-
-    count = 1
-    for i in name:
-        if count == 10:
-            name2 += i+"_"
-        else:
-            name2 += i
-        count = count + 1
-
-    name2 = name2.replace("/", "-")
-    name2 = name2.replace(":", "-")
-    project_root = dirname(dirname(__file__))
-    df.to_csv("LinkedinData_"+str(name2)+".csv", index=False)
+    df2 = pd.DataFrame({"Designation" : b})
+    df2.to_csv(file_name+"_Designation.csv", index=False)
 
 
 
@@ -217,3 +197,4 @@ scrap_available_profie()
 #     #print("Premium")
 # else:
 #     print("Exit")
+
