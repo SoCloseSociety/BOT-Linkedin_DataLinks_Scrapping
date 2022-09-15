@@ -163,13 +163,19 @@ def scrap_available_profie():
                     count2 = count2 + 1
 
 
-    #Linkedin_link = list(dict.fromkeys(Linkedin_link))
-    #Linked_in_designation = list(dict.fromkeys(Linked_in_designation))
+    Linkedin_link = list(dict.fromkeys(Linkedin_link))
+    Linked_in_designation = list(dict.fromkeys(Linked_in_designation))
+    
+    clean_linkedin_links = []
+    for L_l in Linkedin_link:
+        if 'headless?' not in L_l:
+            clean_linkedin_links.append(L_l)
 
-    print(len(Linkedin_link))
+    print(len(clean_linkedin_links))
     print(len(Linked_in_designation))
 
-    a = np.array(Linkedin_link)
+
+    a = np.array(clean_linkedin_links)
     b = np.array(Linked_in_designation)
 
     df = pd.DataFrame({"Profile Link" : a})
@@ -185,16 +191,4 @@ def scrap_available_profie():
 loging()
 time.sleep(15)
 scrap_available_profie()
-# print("Put any of  one choice:\n[1] For massage with connects\n[2] For massage to people of  selected profiles (This feature is avalable  only for Premium)")
-# choice = int(input("Enter choice:"))
-# if choice==1:
-#     loging()
-#     messaging_to_connects()
-#     #print("Normal")
-# elif choice==2:
-#     loging()
-#     messaging_to_anyone_for_permium()
-#     #print("Premium")
-# else:
-#     print("Exit")
 
